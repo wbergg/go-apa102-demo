@@ -12,7 +12,7 @@ func main() {
 
 	numPixels := 144
 	var Intensity uint8 = 50
-	pixels := make([]strip.RGB, numPixels, Intensity)
+	pixels := make([]strip.RGB, numPixels)
 
 	s, err := strip.NewStrip(numPixels, Intensity, *mhz)
 	if err != nil {
@@ -24,9 +24,9 @@ func main() {
 		//c := strip.RandomizeColor()
 		for i, _ := range pixels {
 			pixels[i] = strip.RGB{
-				red:   1.0,
-				green: 1.0,
-				blue:  1.0,
+				Red:   1.0,
+				Green: 1.0,
+				Blue:  1.0,
 			}
 		}
 		s.Render(pixels)

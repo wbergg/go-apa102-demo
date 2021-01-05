@@ -13,9 +13,9 @@ import (
 )
 
 type RGB struct {
-	red   float64
-	green float64
-	blue  float64
+	Red   float64
+	Green float64
+	Blue  float64
 }
 
 type Strip struct {
@@ -67,16 +67,16 @@ func (s *Strip) Render(p []RGB) {
 	s.buffer = s.buffer[:0]
 	for i, p := range p {
 		s.buffer = append(s.buffer, []byte{
-			clamp255(p.red * 255),
-			clamp255(p.green * 255),
-			clamp255(p.blue * 255),
+			Clamp255(p.Red * 255),
+			Clamp255(p.Green * 255),
+			Clamp255(p.Blue * 255),
 			byte(i),
 		}...)
 	}
 	s.strip.Write(s.buffer)
 }
 
-func clamp255(v float64) byte {
+func Clamp255(v float64) byte {
 	if v < 0 {
 		return 0
 	}
@@ -92,8 +92,8 @@ func RandomizeColor() RGB {
 	g := float64(rand.Intn(255))
 	b := float64(rand.Intn(255))
 	return RGB{
-		red:   r,
-		green: g,
-		blue:  b,
+		Red:   r,
+		Green: g,
+		Blue:  b,
 	}
 }
