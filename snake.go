@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 
 	"github.com/wbergg/go-apa102-demo/strip"
 )
@@ -21,17 +20,15 @@ func main() {
 	}
 
 	for {
-
 		// Random RGB values
 		//c := strip.RandomizeColor()
 		for i, _ := range pixels {
-			pixels[i] = strip.Pixel{
-				red: 1.0,
+			pixels[i] = strip.RGB{
+				red:   1.0,
 				green: 1.0,
-				blue: 1.0,
+				blue:  1.0,
 			}
-
+		}
 		s.Render(pixels)
-
 	}
 }
