@@ -20,41 +20,18 @@ func main() {
 		panic(err)
 	}
 
-	var b1 = []byte{}
 	for {
 
-		// Build an array of RGB values
-		c := strip.RandomizeColor()
-		fmt.Println(c)
+		// Random RGB values
+		//c := strip.RandomizeColor()
+		for i, _ := range pixels {
+			pixels[i] = strip.Pixel{
+				red: 1.0,
+				green: 1.0,
+				blue: 1.0,
+			}
 
-		for i := 0; i < s.NumPixles; i++ {
-			b1 = append(b1, []byte{
-				Clamp255(c.red * 255),
-				Clamp255(c.green * 255),
-				Clamp255(c.blue * 255),
-				byte(i),
-			}...)
-			//a.Write(b1)
-			//fmt.Println(b1)
-		}
-
-		s.strip.Write(b1)
-		b1 = b1[:0]
+		s.Render(pixels)
 
 	}
-}
-
-func Render() {
-	fmt.Println("paint")
-}
-
-func Clamp255(v float64) byte {
-	if v < 0 {
-		return 0
-	}
-	if v > 255 {
-		return 255
-	}
-
-	return byte(v)
 }
