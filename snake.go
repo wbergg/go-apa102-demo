@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	"./strip"
+	"github.com/wbergg/go-apa102-demo/strip"
 )
 
 var mhz = flag.Int64("megahertz", 6, "what mhz to clock SPI at")
@@ -13,7 +13,8 @@ var mhz = flag.Int64("megahertz", 6, "what mhz to clock SPI at")
 func main() {
 
 	numPixels := 144
-	pixels := make([]strip.RGB, numPixels)
+	Intensity := 50
+	pixels := make([]strip.RGB, numPixels, Intensity)
 
 	s, err := strip.NewStrip(numPixels, *mhz)
 	if err != nil {

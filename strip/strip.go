@@ -20,11 +20,12 @@ type RGB struct {
 
 type Strip struct {
 	NumPixles int
+	Intensity uint8
 	strip     *apa102.Dev
 	buffer    []byte
 }
 
-func NewStrip(numPixels int, mhz int64) (Strip, error) {
+func NewStrip(numPixels int, Intensity uint8, mhz int64) (Strip, error) {
 	if _, err := host.Init(); err != nil {
 		log.Fatal(err)
 	}
@@ -46,8 +47,8 @@ func NewStrip(numPixels int, mhz int64) (Strip, error) {
 	}
 
 	opts := apa102.PassThruOpts
-	opts.NumPixels = 144
-	opts.Intensity = 50
+	opts.NumPixels = numPixels
+	opts.Intensity = Intensity
 	a, err := apa102.New(s1, &opts)
 	defer a.Halt()
 
@@ -56,6 +57,7 @@ func NewStrip(numPixels int, mhz int64) (Strip, error) {
 	}
 	return Strip{
 		NumPixles: numPixels,
+		Intensity: Intensity,
 		strip:     a,
 		buffer:    []byte{},
 	}, nil
