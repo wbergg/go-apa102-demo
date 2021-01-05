@@ -1,7 +1,6 @@
 package strip
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 	"strconv"
@@ -40,7 +39,7 @@ func NewStrip(numPixels int, Intensity uint8, mhz int64) (Strip, error) {
 	dd.Set(strconv.FormatInt(mhz, 10) + "MHz")
 
 	if err := s1.LimitSpeed(dd); err != nil {
-		fmt.Println(err)
+		return Strip{}, err
 	}
 
 	if p, ok := s1.(spi.Pins); ok {
