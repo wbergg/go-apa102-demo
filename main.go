@@ -18,13 +18,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer s.Close()
 
 	for {
 		// Random RGB values
 		//c := strip.RandomizeColor()
 		for i, _ := range pixels {
 			pixels[i] = strip.RGB{
-				Red:   1.0,
+				Red:   0.0,
 				Green: 1.0,
 				Blue:  1.0,
 			}

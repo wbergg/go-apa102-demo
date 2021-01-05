@@ -21,20 +21,21 @@ type RGB struct {
 type Strip struct {
 	NumPixles int
 	Intensity uint8
+	spiport   spi.PortCloser
 	strip     *apa102.Dev
 	buffer    []byte
 }
 
 func NewStrip(numPixels int, Intensity uint8, mhz int64) (Strip, error) {
 	if _, err := host.Init(); err != nil {
-		log.Fatal(err)
+		return Strip{}, err
 	}
 
 	s1, err := spireg.Open("/dev/spidev0.0")
 	if err != nil {
-		panic(err)
+		return Strip{}, err
 	}
-	defer s1.Close()
+
 	dd := physic.MegaHertz
 	dd.Set(strconv.FormatInt(mhz, 10) + "MHz")
 
@@ -50,30 +51,40 @@ func NewStrip(numPixels int, Intensity uint8, mhz int64) (Strip, error) {
 	opts.NumPixels = numPixels
 	opts.Intensity = Intensity
 	a, err := apa102.New(s1, &opts)
-	defer a.Halt()
 
 	if err != nil {
-		panic(err)
+		return Strip{}, err
 	}
+
 	return Strip{
 		NumPixles: numPixels,
 		Intensity: Intensity,
 		strip:     a,
+		spiport:   s1,
 		buffer:    []byte{},
 	}, nil
 }
 
 func (s *Strip) Render(p []RGB) {
 	s.buffer = s.buffer[:0]
-	for i, p := range p {
+	for _, p := range p {
 		s.buffer = append(s.buffer, []byte{
 			Clamp255(p.Red * 255),
 			Clamp255(p.Green * 255),
 			Clamp255(p.Blue * 255),
-			byte(i),
 		}...)
 	}
-	s.strip.Write(s.buffer)
+
+	_, err := s.strip.Write(s.buffer)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (s *Strip) Close() {
+	s.strip.Halt()
+	s.spiport.Close()
+
 }
 
 func Clamp255(v float64) byte {
