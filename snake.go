@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"math/rand"
 
 	"github.com/wbergg/go-apa102-demo/strip"
 )
@@ -13,10 +12,10 @@ var mhz = flag.Int64("megahertz", 6, "what mhz to clock SPI at")
 func main() {
 
 	numPixels := 144
-	Intensity := 50
+	var Intensity uint8 = 50
 	pixels := make([]strip.RGB, numPixels, Intensity)
 
-	s, err := strip.NewStrip(numPixels, *mhz)
+	s, err := strip.NewStrip(numPixels, Intensity, *mhz)
 	if err != nil {
 		panic(err)
 	}
@@ -24,11 +23,11 @@ func main() {
 	var b1 = []byte{}
 	for {
 
-		// Build an array of RBG values
-		c := RandomizeColor(*pixels)
+		// Build an array of RGB values
+		c := strip.RandomizeColor()
 		fmt.Println(c)
 
-		for i := 0; i < opts.NumPixels; i++ {
+		for i := 0; i < s.NumPixles; i++ {
 			b1 = append(b1, []byte{
 				Clamp255(c.red * 255),
 				Clamp255(c.green * 255),
@@ -39,7 +38,7 @@ func main() {
 			//fmt.Println(b1)
 		}
 
-		a.Write(b1)
+		s.strip.Write(b1)
 		b1 = b1[:0]
 
 	}
@@ -47,12 +46,6 @@ func main() {
 
 func Render() {
 	fmt.Println("paint")
-}
-func RandomizeColor(RBG) RGB {
-	r := float64(rand.Intn(255))
-	g := float64(rand.Intn(255))
-	b := float64(rand.Intn(255))
-	return strip.RGB{r, g, b}
 }
 
 func Clamp255(v float64) byte {

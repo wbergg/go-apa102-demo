@@ -3,6 +3,7 @@ package strip
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"strconv"
 
 	"periph.io/x/conn/physic"
@@ -36,7 +37,7 @@ func NewStrip(numPixels int, Intensity uint8, mhz int64) (Strip, error) {
 	}
 	defer s1.Close()
 	dd := physic.MegaHertz
-	dd.Set(strconv.FormatInt(*mhz, 10) + "MHz")
+	dd.Set(strconv.FormatInt(mhz, 10) + "MHz")
 
 	if err := s1.LimitSpeed(dd); err != nil {
 		fmt.Println(err)
@@ -61,4 +62,11 @@ func NewStrip(numPixels int, Intensity uint8, mhz int64) (Strip, error) {
 		strip:     a,
 		buffer:    []byte{},
 	}, nil
+}
+
+func RandomizeColor() RGB {
+	r := float64(rand.Intn(255))
+	g := float64(rand.Intn(255))
+	b := float64(rand.Intn(255))
+	return RGB{r, g, b}
 }
