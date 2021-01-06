@@ -13,9 +13,10 @@ import (
 )
 
 type RGB struct {
-	Red   float64
-	Green float64
-	Blue  float64
+	Red       float64
+	Green     float64
+	Blue      float64
+	Intensity float64
 }
 
 type Strip struct {
@@ -72,6 +73,10 @@ func (s *Strip) Render(p []RGB) {
 			Clamp255(p.Red * 255),
 			Clamp255(p.Green * 255),
 			Clamp255(p.Blue * 255),
+			//Intensity test
+			//Clamp255(p.Red * 255 * p.Intensity),
+			//Clamp255(p.Green * 255 * p.Intensity),
+			//Clamp255(p.Blue * 255 * p.Intensity),
 		}...)
 	}
 
