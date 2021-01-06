@@ -20,7 +20,6 @@ type RGB struct {
 
 type Strip struct {
 	NumPixles int
-	Intensity uint8
 	spiport   spi.PortCloser
 	strip     *apa102.Dev
 	buffer    []byte
@@ -58,7 +57,6 @@ func NewStrip(numPixels int, Intensity uint8, mhz int64) (Strip, error) {
 
 	return Strip{
 		NumPixles: numPixels,
-		Intensity: Intensity,
 		strip:     a,
 		spiport:   s1,
 		buffer:    []byte{},
