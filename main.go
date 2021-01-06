@@ -2,7 +2,9 @@ package main
 
 import (
 	"flag"
+	"time"
 
+	"github.com/wbergg/go-apa102-demo/randomizecolor"
 	"github.com/wbergg/go-apa102-demo/strip"
 )
 
@@ -21,15 +23,20 @@ func main() {
 	defer s.Close()
 
 	for {
-		// Random RGB values
-		//c := strip.RandomizeColor()
+		// Get random RGB values
+		c := randomizecolor.RandomizeColor()
+
 		for i, _ := range pixels {
-			pixels[i] = strip.RGB{
-				Red:   0.0,
-				Green: 1.0,
-				Blue:  1.0,
-			}
+			pixels[i] = c
+			time.Sleep(time.Millisecond * 10)
 		}
+		//for i, _ := range pixels {
+		//	pixels[i] = strip.RGB{
+		//		Red:   0.0,
+		//		Green: 0.0,
+		//		Blue:  255.0,
+		//	}
+		//}
 		s.Render(pixels)
 	}
 }

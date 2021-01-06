@@ -2,7 +2,6 @@ package strip
 
 import (
 	"log"
-	"math/rand"
 	"strconv"
 
 	"periph.io/x/conn/physic"
@@ -101,15 +100,4 @@ func Clamp255(v float64) byte {
 	}
 
 	return byte(v)
-}
-
-func RandomizeColor() RGB {
-	r := float64(rand.Intn(255))
-	g := float64(rand.Intn(255))
-	b := float64(rand.Intn(255))
-	return RGB{
-		Red:   r,
-		Green: g,
-		Blue:  b,
-	}
 }
