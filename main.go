@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"time"
 
 	"github.com/wbergg/go-apa102-demo/randomizecolor"
@@ -22,21 +23,55 @@ func main() {
 	}
 	defer s.Close()
 
+	index := 0
+	direction := false
+	// Get random RGB values
+	//c := randomizecolor.RandomizeColor()
+
 	for {
-		// Get random RGB values
+
 		c := randomizecolor.RandomizeColor()
+		fmt.Println(c)
+
+		if index >= numPixels {
+			direction = false
+		}
+		if index <= 0 {
+			direction = true
+		}
+
+		if direction {
+			index++
+		} else {
+			index--
+		}
 
 		for i, _ := range pixels {
-			pixels[i] = c
-			time.Sleep(time.Millisecond * 10)
+
+			if i == index {
+				pixels[i] = c
+				s.Render(pixels)
+				time.Sleep(time.Millisecond * 10)
+			} else {
+				pixels[i] = c
+				s.Render(pixels)
+				time.Sleep(time.Millisecond * 10)
+			}
 		}
-		//for i, _ := range pixels {
-		//	pixels[i] = strip.RGB{
-		//		Red:   0.0,
-		//		Green: 0.0,
-		//		Blue:  255.0,
-		//	}
-		//}
-		s.Render(pixels)
+
+		//s.Render(pixels)
 	}
 }
+
+//// Different patterns, split these to separate packages later
+// Light all, fixed color
+//func LitAll() {
+//for i, _ := range pixels {
+//	pixels[i] = strip.RGB{
+//		Red:   0.0,
+//		Green: 0.0,
+//		Blue:  255.0,
+//	}
+//}
+//s.Render(pixels)
+//}

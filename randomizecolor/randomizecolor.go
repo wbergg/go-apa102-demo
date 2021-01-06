@@ -2,18 +2,21 @@ package randomizecolor
 
 import (
 	"math/rand"
+	"time"
 
 	"github.com/wbergg/go-apa102-demo/strip"
 )
 
 func RandomizeColor() strip.RGB {
+	rand.Seed(time.Now().UTC().UnixNano())
+
 	// Randomize a 0-255 integer
 	r := float64(rand.Intn(255))
 	// Round off the integer to either 0, 128 or 255
 	if r <= 85 {
 		r = 0
 	}
-	if r >= 86 || r >= 170 {
+	if r >= 86 && r <= 170 {
 		r = 128
 	}
 	if r >= 171 {
@@ -26,7 +29,7 @@ func RandomizeColor() strip.RGB {
 	if g <= 85 {
 		g = 0
 	}
-	if g >= 86 || g >= 170 {
+	if g >= 86 && g <= 170 {
 		g = 128
 	}
 	if g >= 171 {
@@ -39,7 +42,7 @@ func RandomizeColor() strip.RGB {
 	if b <= 85 {
 		b = 0
 	}
-	if b >= 86 || b >= 170 {
+	if b >= 86 && b <= 170 {
 		b = 128
 	}
 	if b >= 171 {
